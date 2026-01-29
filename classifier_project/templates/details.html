@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Model Details - AI Classifier</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <a href="/" class="nav-brand">
+            <i class="fas fa-shield-alt"></i> Image Classifier
+        </a>
+        <div class="nav-links">
+            <a href="/" class="nav-link">Home</a>
+            <a href="/details" class="nav-link active">How it Works</a>
+            <a href="/deep-process" class="nav-link">Deep Process</a>
+            <a href="/references" class="nav-link">References</a>
+            <a href="/test-examples" class="nav-link">Test Suite</a>
+            <a href="/apidocs" class="nav-link" target="_blank">API</a>
+        </div>
+    </nav>
+
+    <div class="container" style="max-width: 1000px;">
+
+        <header style="margin-bottom: 4rem;">
+            <h1>The Analysis <span class="highlight">Pipeline</span></h1>
+            <p class="subtitle">A visual journey of how we transform a raw image into a forensic verdict.</p>
+        </header>
+
+        <!-- Visual Step-by-Step Pipeline -->
+        <section class="visual-pipeline">
+
+            <!-- Step 1 -->
+            <div class="visual-step">
+                <div class="step-visual">
+                    <div class="demo-img-raw"></div>
+                </div>
+                <div class="step-info">
+                    <div class="step-badge">Step 1</div>
+                    <h3>Image Acquisition</h3>
+                    <p>The user uploads a high-resolution image. At this stage, the image contains millions of pixels
+                        and potentially large amounts of metadata.</p>
+                    <div class="tags">
+                        <span class="tech-tag">Input: Any Size</span>
+                        <span class="tech-tag">Format: RGB</span>
+                    </div>
+                </div>
+            </div>
+
+            <i class="fas fa-arrow-down" style="align-self: center; color: #ccc; font-size: 1.5rem;"></i>
+
+            <!-- Step 2 -->
+            <div class="visual-step">
+                <div class="step-visual">
+                    <div class="demo-img-processed"></div>
+                </div>
+                <div class="step-info">
+                    <div class="step-badge">Step 2</div>
+                    <h3>Preprocessing</h3>
+                    <p>The system intelligently resizes the image to <strong>224x224 pixels</strong>. This
+                        standardization
+                        is crucial for the neural network. We also normalize pixel values from 0-255 to the expected
+                        range for
+                        EfficientNet to speed up mathematical convergence.</p>
+                    <div class="tags">
+                        <span class="tech-tag">Resize: 224x224</span>
+                        <span class="tech-tag">Normalize</span>
+                    </div>
+                </div>
+            </div>
+
+            <i class="fas fa-arrow-down" style="align-self: center; color: #ccc; font-size: 1.5rem;"></i>
+
+            <!-- Step 3 -->
+            <div class="visual-step">
+                <div class="step-visual">
+                    <div class="feature-grid">
+                        <div class="feature-cell" style="background: #333;"></div>
+                        <div class="feature-cell" style="background: #555;"></div>
+                        <div class="feature-cell" style="background: #222;"></div>
+                        <div class="feature-cell" style="background: #888;"></div>
+                        <div class="feature-cell" style="background: #111;"></div>
+                        <div class="feature-cell" style="background: #666;"></div>
+                        <div class="feature-cell" style="background: #444;"></div>
+                        <div class="feature-cell" style="background: #999;"></div>
+                        <!-- More cells implied -->
+                    </div>
+                </div>
+                <div class="step-info">
+                    <div class="step-badge">Step 3</div>
+                    <h3>Feature Extraction</h3>
+                    <p>Our <strong>EfficientNetB0</strong> engine applies hundreds of convolutional filters. These
+                        filters
+                        act like "digital eyes," scanning for:</p>
+                    <ul>
+                        <li>Unnatural edge artifacts (common in GANs)</li>
+                        <li>Pixel interpolation inconsistencies</li>
+                        <li>Lighting gradients that defy physics</li>
+                    </ul>
+                    <div class="tags">
+                        <span class="tech-tag">Conv2D</span>
+                        <span class="tech-tag">Swish Activation</span>
+                    </div>
+                </div>
+            </div>
+
+            <i class="fas fa-arrow-down" style="align-self: center; color: #ccc; font-size: 1.5rem;"></i>
+
+            <!-- Step 4 -->
+            <div class="visual-step">
+                <div class="step-visual">
+                    <div style="font-size: 4rem; font-weight: 800; color: var(--gradient-end);">
+                        94%
+                    </div>
+                </div>
+                <div class="step-info">
+                    <div class="step-badge">Step 4</div>
+                    <h3>Forensic Verdict</h3>
+                    <p>The extracted features are flattened into a single vector and passed through a Dense layer. A
+                        <strong>Sigmoid</strong> function squashes the result into a probability between 0 (AI) and 1
+                        (Real).
+                    </p>
+                    <div class="tags">
+                        <span class="tech-tag">Sigmoid</span>
+                        <span class="tech-tag">Binary Classification</span>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+
+    </div>
+</body>
+
+</html>

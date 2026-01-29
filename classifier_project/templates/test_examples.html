@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Verification - AI Classifier</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        .test-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .test-card {
+            background: white;
+            border-radius: 0.75rem;
+            overflow: hidden;
+            box-shadow: var(--shadow-small);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s;
+        }
+
+        .test-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .card-image {
+            height: 140px;
+            width: 100%;
+            object-fit: cover;
+            border-bottom: 1px solid #eee;
+        }
+
+        .card-body {
+            padding: 1rem;
+        }
+
+        .card-category {
+            text-transform: uppercase;
+            font-size: 0.65rem;
+            color: #888;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+            display: block;
+        }
+
+        .result-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.25rem;
+            font-size: 0.8rem;
+        }
+
+        .label-real {
+            color: var(--success-color);
+            font-weight: 600;
+        }
+
+        .label-ai {
+            color: var(--error-color);
+            font-weight: 600;
+        }
+
+        .match-badge {
+            display: inline-block;
+            padding: 0.15rem 0.4rem;
+            border-radius: 3px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+
+        .match-success {
+            background: #E8F5E9;
+            color: #2E7D32;
+        }
+
+        .match-fail {
+            background: #FFEBEE;
+            color: #C62828;
+        }
+
+        .accuracy-bar {
+            height: 4px;
+            background: #eee;
+            border-radius: 2px;
+            margin-top: 0.75rem;
+            overflow: hidden;
+        }
+
+        .accuracy-fill {
+            height: 100%;
+            background: var(--highlight-color);
+            transition: width 0.5s ease;
+        }
+
+        .stats-overview {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card h4 {
+            font-size: 0.9rem;
+        }
+
+        .stat-card p {
+            font-size: 1.25rem;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <a href="/" class="nav-brand">
+            <i class="fas fa-shield-alt"></i> Image Classifier
+        </a>
+        <div class="nav-links">
+            <a href="/" class="nav-link">Home</a>
+            <a href="/details" class="nav-link">How it Works</a>
+            <a href="/deep-process" class="nav-link">Deep Process</a>
+            <a href="/references" class="nav-link">References</a>
+            <a href="/test-examples" class="nav-link active">Test Suite</a>
+            <a href="/apidocs" class="nav-link" target="_blank">API</a>
+        </div>
+    </nav>
+
+    <div class="container" style="max-width: 1200px;">
+
+        <header style="margin-bottom: 3rem;">
+            <h1>Manual <span class="highlight">Verification</span></h1>
+            <p class="subtitle">Results from manual verification against <span id="count-display">0</span> samples.</p>
+        </header>
+
+        <!-- Stats Overview -->
+        <div class="stats-overview">
+            <div class="stat-card">
+                <div class="stat-info">
+                    <h4>Total Accuracy</h4>
+                    <p id="accuracy-display">Calculating...</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-info">
+                    <h4>Correct Predictions</h4>
+                    <p id="correct-display">0/0</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="test-grid" id="test-grid">
+            <!-- Cards will be injected here by JS -->
+        </div>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                // Ensure cache busting
+                const response = await fetch('/static/data/test_results.json?t=' + new Date().getTime());
+                let results = await response.json();
+                results = results.reverse(); // Show latest first
+
+                const grid = document.getElementById('test-grid');
+                let matches = 0;
+
+                results.forEach(item => {
+                    const isMatch = item.original_label === item.predicted_label;
+                    if (isMatch) matches++;
+
+                    const confidencePct = Math.round(item.confidence * 100);
+                    // Color logic: Green if correct, Red if wrong
+                    const matchClass = isMatch ? 'match-success' : 'match-fail';
+                    const matchText = isMatch ? 'PASS' : 'FAIL';
+
+                    // Label coloring
+                    const predClass = item.predicted_label === 'Real' ? 'label-real' : 'label-ai';
+
+                    // Accuracy bar color
+                    const barColor = isMatch ? 'var(--success-color)' : 'var(--error-color)';
+
+                    const card = document.createElement('div');
+                    card.className = 'test-card';
+                    card.innerHTML = `
+                        <img src="${item.image_path}" class="card-image" alt="${item.category}" loading="lazy">
+                        <div class="card-body">
+                            
+                            <div class="result-row">
+                                <span style="color:#666">Truth:</span>
+                                <strong>${item.original_label}</strong>
+                            </div>
+                            
+                            <div class="result-row">
+                                <span style="color:#666">Predicted:</span>
+                                <span class="${predClass}">${item.predicted_label}</span>
+                            </div>
+
+                            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:1rem;">
+                                <span class="match-badge ${matchClass}">${matchText}</span>
+                                <span style="font-size:0.85rem; color:#888;">${confidencePct}% Conf.</span>
+                            </div>
+                            
+                            <div class="accuracy-bar">
+                                <div class="accuracy-fill" style="width: ${confidencePct}%; background: ${barColor}"></div>
+                            </div>
+                        </div>
+                    `;
+                    grid.appendChild(card);
+                });
+
+                // Update Stats
+                const total = results.length;
+                document.getElementById('count-display').textContent = total;
+                document.getElementById('correct-display').textContent = `${matches}/${total}`;
+                document.getElementById('accuracy-display').textContent = Math.round((matches / total) * 100) + '%';
+
+            } catch (e) {
+                console.error("Failed to load test results", e);
+                document.getElementById('test-grid').innerHTML = '<p style="text-align:center; color:red; grid-column: 1/-1;">No test results found. Run setup_and_test.py first.</p>';
+            }
+        });
+    </script>
+</body>
+
+</html>

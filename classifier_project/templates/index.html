@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI vs Human Image Classifier</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body>
+    <!-- Background blobs removed for cleaner design -->
+
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <a href="/" class="nav-brand">
+            <i class="fas fa-shield-alt"></i> Image Classifier
+        </a>
+        <div class="nav-links">
+            <a href="/" class="nav-link active">Home</a>
+            <a href="/details" class="nav-link">How it Works</a>
+            <a href="/deep-process" class="nav-link">Deep Process</a>
+            <a href="/references" class="nav-link">References</a>
+            <a href="/test-examples" class="nav-link">Test Suite</a>
+            <a href="/apidocs" class="nav-link" target="_blank">API</a>
+        </div>
+    </nav>
+
+    <div class="container">
+
+        <header>
+            <h1>AI <span class="highlight">Detector</span></h1>
+            <p class="subtitle">Advanced Forensics to Distinguish Human Photography from Artificial Intelligence.</p>
+        </header>
+
+        <main>
+            <!-- Upload Section -->
+            <div class="upload-area" id="drop-zone">
+                <div class="icon-container">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                </div>
+                <h3>Drag & Drop or Click to Upload</h3>
+                <p>Supports JPG, PNG, WEBP, HEIC</p>
+                <input type="file" id="file-input" accept="image/*" hidden>
+            </div>
+
+            <!-- Split Analysis Interface (Initially Hidden) -->
+            <div id="analysis-interface" style="display: none;">
+
+                <!-- Top Toolbar -->
+                <div class="interface-header"
+                    style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                    <h2 style="margin: 0; font-size: 1.25rem; color: #555;">Image Analysis</h2>
+                    <button id="reset-btn" class="secondary-btn"
+                        style="margin: 0; padding: 0.5rem 1rem; font-size: 0.9rem;">
+                        <i class="fas fa-redo"></i> Check Another
+                    </button>
+                </div>
+
+                <div class="analysis-grid">
+                    <!-- Left Column: Image & Action -->
+                    <div class="left-col">
+                        <div class="image-wrapper">
+                            <img id="image-preview" src="" alt="Preview">
+                        </div>
+
+                        <div class="action-area" style="margin-top: 1.5rem; text-align: center;">
+                            <button id="analyze-btn" class="primary-btn" style="width: 100%;">
+                                <span class="btn-text">Analyze Image</span>
+                                <span class="loader" style="display: none;"></span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Right Column: Results (Initially Empty/Placeholder) -->
+                    <div class="right-col">
+                        <div id="result-placeholder" style="text-align: center; color: #999; padding-top: 3rem;">
+                            <i class="fas fa-chart-bar" style="font-size: 3rem; margin-bottom: 1rem; opacity: 0.3;"></i>
+                            <p>Click "Analyze" to see forensic results.</p>
+                        </div>
+
+                        <div id="result-content" style="display: none;">
+                            <div class="result-card" style="box-shadow: none; border: none; padding: 0;">
+                                <div class="verdict" style="margin-top: 0;">
+                                    <span id="verdict-label">...</span>
+                                </div>
+
+                                <div class="chart-container"
+                                    style="position: relative; height:250px; width:100%; margin: 1rem 0;">
+                                    <canvas id="confidenceChart"></canvas>
+                                </div>
+
+                                <div class="confidence-info">
+                                    <p>Confidence: <span id="confidence-value"
+                                            style="font-weight:bold; color:var(--text-color)">0%</span></p>
+                                </div>
+
+                                <!-- Verification Section -->
+                                <div class="verification-box"
+                                    style="margin-top: 2rem; padding-top: 2rem; border-top: 1px solid #eee;">
+                                    <h4
+                                        style="margin: 0 0 1rem 0; font-size: 0.9rem; color: #666; text-transform: uppercase; letter-spacing: 0.05em;">
+                                        Verify & Save Results</h4>
+
+                                    <p style="font-size: 0.85rem; color: #888; margin-bottom: 1rem;">Help improve the
+                                        system by tagging the actual source if you know it.</p>
+
+                                    <div id="verification-section"
+                                        style="display: flex; gap: 1rem; margin-bottom: 1rem;">
+                                        <button id="verify-yes-btn" class="secondary-btn"
+                                            style="flex: 1; margin: 0; border-color: #28a745; color: #28a745;">
+                                            <i class="fas fa-check"></i> Yes, Correct
+                                        </button>
+                                        <button id="verify-no-btn" class="secondary-btn"
+                                            style="flex: 1; margin: 0; border-color: #dc3545; color: #dc3545;">
+                                            <i class="fas fa-times"></i> No, Incorrect
+                                        </button>
+                                    </div>
+
+                                    <div id="save-msg"
+                                        style="margin-top: 0.5rem; font-size: 0.85rem; text-align: center; height: 1.2em;">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+    </div>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+
+</html>

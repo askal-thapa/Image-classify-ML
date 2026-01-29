@@ -1,0 +1,9 @@
+tensorflow>=2.10.0
+flask
+pillow
+numpy
+matplotlib
+scikit-learn
+seaborn
+pillow-heif
+pillow-avif-plugin

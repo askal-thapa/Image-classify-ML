@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>References - AI Classifier</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <a href="/" class="nav-brand">
+            <i class="fas fa-shield-alt"></i> Image Classifier
+        </a>
+        <div class="nav-links">
+            <a href="/" class="nav-link">Home</a>
+            <a href="/details" class="nav-link">How it Works</a>
+            <a href="/deep-process" class="nav-link">Deep Process</a>
+            <a href="/references" class="nav-link active">References</a>
+            <a href="/test-examples" class="nav-link">Test Suite</a>
+            <a href="/apidocs" class="nav-link" target="_blank">API</a>
+        </div>
+    </nav>
+
+    <div class="container" style="max-width: 1000px;">
+
+        <header style="margin-bottom: 4rem;">
+            <h1>References & <span class="highlight">Technologies</span></h1>
+            <p class="subtitle">Sources, datasets, and tools used to build this system.</p>
+        </header>
+
+        <section class="section-card">
+            <h2><i class="fas fa-book"></i> Datasets & Models</h2>
+            <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+
+                <div style="display: flex; gap: 1rem; align-items: flex-start;">
+                    <div
+                        style="background: #E3F2FD; color: #1565C0; width: 40px; height: 40px; border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                        <i class="fas fa-images"></i>
+                    </div>
+                    <div>
+                        <h3 style="margin: 0 0 0.5rem 0; font-size: 1.1rem;">AI vs Real Images Dataset</h3>
+                        <p style="margin: 0 0 0.5rem 0; color: #555;">A dataset from Kaggle used for training,
+                            containing AI-generated and real images.</p>
+                        <a href="https://www.kaggle.com/datasets/cashbowman/ai-generated-images-vs-real-images"
+                            target="_blank"
+                            style="color:var(--highlight-color); text-decoration:none; font-weight: 500;">
+                            <i class="fas fa-external-link-alt"></i> View on Kaggle
+                        </a>
+                    </div>
+                </div>
+
+                <div
+                    style="display: flex; gap: 1rem; align-items: flex-start; border-top: 1px solid #eee; padding-top: 1.5rem;">
+                    <div
+                        style="background: #E8F5E9; color: #2E7D32; width: 40px; height: 40px; border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                        <i class="fas fa-network-wired"></i>
+                    </div>
+                    <div>
+                        <h3 style="margin: 0 0 0.5rem 0; font-size: 1.1rem;">EfficientNetB0</h3>
+                        <p style="margin: 0 0 0.5rem 0; color: #555;">Tan, M., & Le, Q. V. (2019). EfficientNet:
+                            Rethinking Model Scaling for Convolutional Neural Networks.</p>
+                        <a href="https://arxiv.org/abs/1905.11946" target="_blank"
+                            style="color:var(--highlight-color); text-decoration:none; font-weight: 500;">
+                            <i class="fas fa-external-link-alt"></i> Read Research Paper
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Model Performance (Moved from Details) -->
+        <section class="section-card" style="margin-top: 2rem;">
+            <h2><i class="fas fa-chart-line"></i> Model Performance</h2>
+            <p class="subtitle" style="margin-bottom: 2rem;">Metrics from the latest training run.</p>
+
+            <div class="analysis-grid" style="grid-template-columns: 1fr 1fr; gap: 2rem;">
+                <div class="result-card" style="box-shadow: none; border: 1px solid #eee;">
+                    <h3 style="margin-top: 0; font-size: 1rem;">Confusion Matrix</h3>
+                    <img src="{{ url_for('static', filename='metrics/confusion_matrix.png') }}"
+                        style="width:100%; border-radius: 8px;">
+                </div>
+                <div class="result-card" style="box-shadow: none; border: 1px solid #eee;">
+                    <h3 style="margin-top: 0; font-size: 1rem;">ROC Curve</h3>
+                    <img src="{{ url_for('static', filename='metrics/roc_curve.png') }}"
+                        style="width:100%; border-radius: 8px;">
+                </div>
+            </div>
+
+            <div class="result-card" style="margin-top: 2rem; box-shadow: none; border: 1px solid #eee;">
+                <h3 style="margin-top: 0; font-size: 1rem;">Training History</h3>
+                <img src="{{ url_for('static', filename='metrics/training_history.png') }}"
+                    style="width:100%; border-radius: 8px;">
+            </div>
+
+            <div class="result-card" style="margin-top: 2rem; box-shadow: none; border: 1px solid #eee;">
+                <h3 style="margin-top: 0; font-size: 1rem;">Classification Report</h3>
+                <pre
+                    style="background: #f4f4f9; padding: 1rem; border-radius: 8px; overflow-x: auto; font-family: monospace;">{{ report_content }}</pre>
+            </div>
+        </section>
+
+        <section class="section-card">
+            <h2><i class="fas fa-code"></i> Tech Stack</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem;">
+
+                <div style="text-align: center; padding: 1.5rem; background: #FAFAFA; border-radius: 0.5rem;">
+                    <i class="fab fa-python" style="font-size: 2rem; color: #3776AB; margin-bottom: 1rem;"></i>
+                    <h4 style="margin: 0 0 0.5rem 0;">Flask</h4>
+                    <p style="margin: 0; font-size: 0.9rem; color: #666;">Backend Web Framework</p>
+                </div>
+
+                <div style="text-align: center; padding: 1.5rem; background: #FAFAFA; border-radius: 0.5rem;">
+                    <i class="fas fa-layer-group" style="font-size: 2rem; color: #FF6F00; margin-bottom: 1rem;"></i>
+                    <h4 style="margin: 0 0 0.5rem 0;">TensorFlow</h4>
+                    <p style="margin: 0; font-size: 0.9rem; color: #666;">Deep Learning Engine</p>
+                </div>
+
+                <div style="text-align: center; padding: 1.5rem; background: #FAFAFA; border-radius: 0.5rem;">
+                    <i class="fab fa-js" style="font-size: 2rem; color: #F7DF1E; margin-bottom: 1rem;"></i>
+                    <h4 style="margin: 0 0 0.5rem 0;">JavaScript</h4>
+                    <p style="margin: 0; font-size: 0.9rem; color: #666;">Interactive Frontend</p>
+                </div>
+
+                <div style="text-align: center; padding: 1.5rem; background: #FAFAFA; border-radius: 0.5rem;">
+                    <i class="fas fa-chart-bar" style="font-size: 2rem; color: #FF6384; margin-bottom: 1rem;"></i>
+                    <h4 style="margin: 0 0 0.5rem 0;">Chart.js</h4>
+                    <p style="margin: 0; font-size: 0.9rem; color: #666;">Data Visualization</p>
+                </div>
+
+            </div>
+        </section>
+
+    </div>
+</body>
+
+</html>

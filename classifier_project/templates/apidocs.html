@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Documentation - AI Classifier</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        .method-badge {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+        }
+
+        .method-post {
+            background-color: #e3f2fd;
+            color: #1976d2;
+        }
+
+        .endpoint-card {
+            background: white;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-small);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .endpoint-path {
+            font-family: monospace;
+            font-size: 1.1rem;
+            background: #f5f5f5;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            margin-left: 0.5rem;
+            color: #333;
+        }
+
+        pre {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            overflow-x: auto;
+            margin-top: 1rem;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <a href="/" class="nav-brand">
+            <i class="fas fa-shield-alt"></i> Image Classifier
+        </a>
+        <div class="nav-links">
+            <a href="/" class="nav-link">Home</a>
+            <a href="/details" class="nav-link">How it Works</a>
+            <a href="/deep-process" class="nav-link">Deep Process</a>
+            <a href="/references" class="nav-link">References</a>
+            <a href="/test-examples" class="nav-link">Test Suite</a>
+            <a href="/apidocs" class="nav-link active">API</a>
+        </div>
+    </nav>
+
+    <div class="container" style="max-width: 900px; margin-bottom: 4rem;">
+        <header style="margin-bottom: 3rem;">
+            <h1>API <span class="highlight">Documentation</span></h1>
+            <p class="subtitle">Integrate our image classification model into your own applications.</p>
+        </header>
+
+        <!-- Predict Endpoint -->
+        <div class="endpoint-card">
+            <div style="display: flex; align-items: center; margin-bottom: 1rem;">
+                <span class="method-badge method-post">POST</span>
+                <span class="endpoint-path">/api/predict</span>
+            </div>
+            <p>Upload an image to receive a classification prediction (Real vs AI Generated).</p>
+
+            <h3>Allowed Formats</h3>
+            <p><code>.png</code>, <code>.jpg</code>, <code>.jpeg</code>, <code>.gif</code>, <code>.webp</code>,
+                <code>.heic</code>, <code>.heif</code>, <code>.avif</code>, <code>.tiff</code>, <code>.bmp</code>
+            </p>
+
+            <h3>Parameters</h3>
+            <ul>
+                <li><strong>image</strong> (file): The image file to analyze.</li>
+            </ul>
+
+            <h3>Response</h3>
+            <pre>
+{
+    "label": "AI Generated",
+    "confidence": 0.985,
+    "raw_score": 0.015,
+    "filename": "image.jpg"
+}</pre>
+        </div>
+
+        <!-- Save Test Case Endpoint -->
+        <div class="endpoint-card">
+            <div style="display: flex; align-items: center; margin-bottom: 1rem;">
+                <span class="method-badge method-post">POST</span>
+                <span class="endpoint-path">/api/save-test-case</span>
+            </div>
+            <p>Save a verfied image to the test suite.</p>
+
+            <h3>Parameters</h3>
+            <ul>
+                <li><strong>image</strong> (file): The image file being verified.</li>
+                <li><strong>ground_truth</strong> (string): The verified label ("Real" or "AI Generated").</li>
+            </ul>
+
+            <h3>Behavior</h3>
+            <p>Saves the image to <code>static/uploads/Real</code> or <code>static/uploads/AI</code> based on the ground
+                truth and appends the result to the dataset.</p>
+
+            <h3>Response</h3>
+            <pre>
+{
+    "success": true
+}</pre>
+        </div>
+
+    </div>
+
+    <footer>
+        <a href="/" class="api-link">Back to Home</a>
+    </footer>
+</body>
+
+</html>

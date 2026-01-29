@@ -1,0 +1,22 @@
+# General
+.DS_Store
+__pycache__/
+*.pyc
+*.pyo
+
+# Virtual Environments
+.venv/
+venv/
+env/
+
+# Data & Models
+# We keep best_model.keras but maybe ignore intermediate checkpoints if any
+# *.h5
+
+# Application Runtime Data
+classifier_project/static/uploads/
+classifier_project/static/data/
+classifier_project/static/test_cases_served/
+
+# OS
+.MacOS

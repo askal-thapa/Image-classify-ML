@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deep Process - Technical Deep Dive</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <!-- Katex for Math Rendering -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body, {
+            delimiters: [
+                {left: '$$', right: '$$', display: true},
+                {left: '$', right: '$', display: false},
+                {left: '\\(', right: '\\)', display: false},
+                {left: '\\[', right: '\\]', display: true}
+            ],
+            throwOnError : false
+        });"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .process-section {
+            background: white;
+            border-radius: 12px;
+            padding: 2.5rem;
+            margin-bottom: 2.5rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 1rem;
+        }
+
+        .section-icon {
+            background: var(--primary-color);
+            color: white;
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-right: 1.5rem;
+        }
+
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 1.5rem;
+        }
+
+        .tech-card {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 1.5rem;
+            border-left: 4px solid var(--secondary-color);
+        }
+
+        .tech-card h4 {
+            margin-top: 0;
+            color: #333;
+            font-size: 1.1rem;
+        }
+
+        .formula-box {
+            background: #1a1a1a;
+            color: #fff;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+            text-align: center;
+            font-size: 1.2rem;
+            overflow-x: auto;
+        }
+
+        .code-block {
+            background: #2d2d2d;
+            color: #a9b7c6;
+            padding: 1.5rem;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            overflow-x: auto;
+            margin-top: 1rem;
+        }
+
+        .keyword {
+            color: #cc7832;
+        }
+
+        .string {
+            color: #6a8759;
+        }
+
+        .number {
+            color: #6897bb;
+        }
+
+        .comment {
+            color: #808080;
+        }
+
+        .architecture-diagram {
+            margin: 2rem 0;
+            padding: 2rem;
+            background: #fff;
+            border: 1px dashed #ccc;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .layer-box {
+            display: inline-block;
+            padding: 0.8rem 1.5rem;
+            border-radius: 6px;
+            color: white;
+            font-weight: bold;
+            font-size: 0.9rem;
+            margin: 0.5rem;
+            position: relative;
+        }
+
+        .arrow-down {
+            display: block;
+            margin: 0.5rem auto;
+            color: #ccc;
+        }
+
+        .layer-input {
+            background: #6c757d;
+        }
+
+        .layer-conv {
+            background: #007bff;
+        }
+
+        .layer-mbconv {
+            background: #17a2b8;
+        }
+
+        .layer-pool {
+            background: #fd7e14;
+        }
+
+        .layer-dense {
+            background: #28a745;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <a href="/" class="nav-brand">
+            <i class="fas fa-shield-alt"></i> Image Classifier
+        </a>
+        <div class="nav-links">
+            <a href="/" class="nav-link">Home</a>
+            <a href="/details" class="nav-link">How it Works</a>
+            <a href="/deep-process" class="nav-link active">Deep Process</a>
+            <a href="/references" class="nav-link">References</a>
+            <a href="/test-examples" class="nav-link">Test Suite</a>
+            <a href="/apidocs" class="nav-link" target="_blank">API</a>
+        </div>
+    </nav>
+
+    <div class="container" style="max-width: 1100px;">
+        <header>
+            <h1>Advanced <span class="highlight">Architecture</span> Analysis</h1>
+            <p class="subtitle">A rigorous technical breakdown of the EfficientNetB0 pipeline and mathematical
+                foundations.</p>
+        </header>
+
+        <main>
+            <!-- 1. Model Architecture -->
+            <section class="process-section">
+                <div class="section-header">
+                    <div class="section-icon"><i class="fas fa-network-wired"></i></div>
+                    <div>
+                        <h2 style="margin: 0;">1. The Backbone: EfficientNetB0</h2>
+                        <p style="margin: 0.5rem 0 0 0; color: #666;">Optimized via Neural Architecture Search (NAS) for
+                            compound scaling.</p>
+                    </div>
+                </div>
+
+                <p>The core of our classifier is <strong>EfficientNetB0</strong>, a Convolutional Neural Network (CNN)
+                    that balances <var>depth</var>, <var>width</var>, and <var>resolution</var>. Unlike traditional
+                    ResNets, it uses the <strong>MBConv</strong> block as its fundamental building unit.</p>
+
+                <div class="architecture-diagram">
+                    <div class="layer-box layer-input">Input (224, 224, 3)</div>
+                    <i class="fas fa-arrow-down arrow-down"></i>
+                    <div class="layer-box layer-conv">Conv3x3 + BN + Swish</div>
+                    <i class="fas fa-arrow-down arrow-down"></i>
+                    <div class="layer-box layer-mbconv">MBConv1 (x1)</div>
+                    <i class="fas fa-arrow-down arrow-down"></i>
+                    <div class="layer-box layer-mbconv">MBConv6 (x2)</div>
+                    <div class="comment" style="font-size: 0.8rem; margin: 0.5rem 0;">... repeated blocks with varying
+                        Kernel sizes (3x3, 5x5) ...</div>
+                    <div class="layer-box layer-mbconv">MBConv6 (x15)</div>
+                    <i class="fas fa-arrow-down arrow-down"></i>
+                    <div class="layer-box layer-conv">Conv1x1 + BN + Swish</div>
+                    <i class="fas fa-arrow-down arrow-down"></i>
+                    <div class="layer-box layer-pool">Global Avg Pooling</div>
+                    <i class="fas fa-arrow-down arrow-down"></i>
+                    <div class="layer-box layer-dense">Dense (Sigmoid)</div>
+                </div>
+
+                <div class="tech-grid">
+                    <div class="tech-card">
+                        <h4>MBConv Block</h4>
+                        <p>The <strong>Mobile Inverted Bottleneck Convolution</strong> is designed for efficiency. It
+                            follows a specific expansion-compression flow:</p>
+                        <ol style="font-size: 0.9rem; padding-left: 1.2rem;">
+                            <li><strong>1x1 Expansion:</strong> Increases channel dimension (Wide).</li>
+                            <li><strong>Depthwise Conv:</strong> Spatial filtering (3x3 or 5x5) on each channel
+                                independently (Efficient).</li>
+                            <li><strong>SE Block:</strong> Squeeze-and-Excitation for attention.</li>
+                            <li><strong>1x1 Projection:</strong> Compress back to low dimension (Narrow).</li>
+                        </ol>
+                    </div>
+                    <div class="tech-card">
+                        <h4>Swish Activation</h4>
+                        <p>Instead of ReLU, we use <strong>Swish</strong>, a smooth, non-monotonic function discovered
+                            by Google Brain. It allows a small amount of negative information to flow through.</p>
+                        <div style="font-family: monospace; text-align: center; margin: 1rem 0;">
+                            $$ f(x) = x \cdot \sigma(x) $$
+                        </div>
+                        <p style="font-size: 0.9rem;">Unlike ReLU ($max(0, x)$), Swish is differentiable everywhere,
+                            aiding optimization.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 2. Transfer Learning Strategy -->
+            <section class="process-section">
+                <div class="section-header">
+                    <div class="section-icon"><i class="fas fa-brain"></i></div>
+                    <div>
+                        <h2 style="margin: 0;">2. Training Dynamics</h2>
+                        <p style="margin: 0.5rem 0 0 0; color: #666;">Leveraging ImageNet weights with Fine-Tuning.</p>
+                    </div>
+                </div>
+
+                <p>We employ a <strong>Transfer Learning</strong> strategy to achieve high accuracy with a limited
+                    dataset.</p>
+
+                <div class="tech-grid">
+                    <div class="tech-card">
+                        <h4>Phase 1: Feature Extraction</h4>
+                        <p>We initialize the model with weights pre-trained on <strong>ImageNet</strong> (1.2M images).
+                            The base layers are <strong>frozen</strong>.</p>
+                        <div class="code-block">
+                            <span class="keyword">base_model</span> = applications.EfficientNetB0(
+                            include_top=<span class="keyword">False</span>,
+                            weights=<span class="string">"imagenet"</span>
+                            )
+                            <span class="keyword">base_model</span>.trainable = <span class="keyword">False</span>
+                        </div>
+                    </div>
+                    <div class="tech-card">
+                        <h4>Phase 2: Fine-Tuning</h4>
+                        <p>We unfreeze the top layers and retrain with a very low learning rate ($\eta = 10^{-5}$) to
+                            adapt the high-level features to our specific "AI vs Real" domain.</p>
+                        <div class="code-block">
+                            <span class="comment"># Unfreeze for fine-tuning</span>
+                            <span class="keyword">for</span> layer <span class="keyword">in</span> model.layers:
+                            <span class="keyword">if</span> <span class="string">"efficientnet"</span> <span
+                                class="keyword">in</span> layer.name:
+                            layer.trainable = <span class="keyword">True</span>
+
+                            optimizer = Adam(learning_rate=<span class="number">1e-5</span>)
+                        </div>
+                    </div>
+                </div>
+
+                <h3 style="margin-top: 2rem;">Data Augmentation</h3>
+                <p>To prevent overfitting, we apply random transformations during training, forcing the model to learn
+                    invariant features.</p>
+                <ul style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; list-style: none; padding: 0;">
+                    <li style="background: #f4f4f4; padding: 0.5rem 1rem; border-radius: 4px;">
+                        <strong>RandomFlip:</strong> Horizontal
+                    </li>
+                    <li style="background: #f4f4f4; padding: 0.5rem 1rem; border-radius: 4px;">
+                        <strong>RandomRotation:</strong> ±20% ($0.2\pi$)
+                    </li>
+                    <li style="background: #f4f4f4; padding: 0.5rem 1rem; border-radius: 4px;">
+                        <strong>RandomZoom:</strong> ±20%
+                    </li>
+                    <li style="background: #f4f4f4; padding: 0.5rem 1rem; border-radius: 4px;">
+                        <strong>RandomContrast:</strong> ±20%
+                    </li>
+                </ul>
+            </section>
+
+            <!-- 3. Mathematical Verdict -->
+            <section class="process-section">
+                <div class="section-header">
+                    <div class="section-icon"><i class="fas fa-calculator"></i></div>
+                    <div>
+                        <h2 style="margin: 0;">3. The Mathematical Verdict</h2>
+                        <p style="margin: 0.5rem 0 0 0; color: #666;">From Logits to Probability.</p>
+                    </div>
+                </div>
+
+                <div class="tech-grid">
+                    <div class="tech-card">
+                        <h4>Step A: Global Average Pooling</h4>
+                        <p>The final feature map from EfficientNet has dimensions $(7, 7, 1280)$. We reduce this to a
+                            single vector of size $1280$ by averaging each feature map.</p>
+                        <div style="text-align: center; margin: 1rem 0;">
+                            $$ \mathbf{v}_k = \frac{1}{H \times W} \sum_{i=1}^{H} \sum_{j=1}^{W} \mathbf{x}_{ijk} $$
+                        </div>
+                    </div>
+                    <div class="tech-card">
+                        <h4>Step B: The Dense Layer (Logit)</h4>
+                        <p>This vector $\mathbf{v}$ takes a dot product with the learned weights $\mathbf{w}$ plus a
+                            bias $b$ to produce the raw <strong>Logit</strong> ($z$).</p>
+                        <div style="text-align: center; margin: 1rem 0;">
+                            $$ z = \mathbf{w}^T \mathbf{v} + b $$
+                        </div>
+                        <p style="font-size: 0.9rem;">If $z > 0$, the model leans towards "Real". If $z < 0$, it leans
+                                towards "AI" .</p>
+                    </div>
+                </div>
+
+                <h3 style="margin-top: 2rem; text-align: center;">Step C: Sigmoid Activation</h3>
+                <p style="text-align: center; max-width: 600px; margin: 0 auto;">Finally, we apply the Sigmoid function
+                    to map the unbound logit $z$ ($-\infty$ to $+\infty$) to a strict probability range $[0, 1]$.</p>
+
+                <div class="formula-box">
+                    $$ P(y=1|x) = \sigma(z) = \frac{1}{1 + e^{-z}} $$
+                </div>
+
+                <div style="text-align: center; margin-top: 2rem;">
+                    <div
+                        style="display: inline-block; text-align: left; background: #fafafa; padding: 1.5rem; border-radius: 8px; border: 1px solid #eee;">
+                        <strong>Interpretation Logic:</strong>
+                        <ul style="margin-top: 0.5rem;">
+                            <li>Let $P_{real} = \sigma(z)$</li>
+                            <li>If $P_{real} \geq 0.5 \Rightarrow$ <strong>Class: Real</strong> (Confidence =
+                                $P_{real}$)</li>
+                            <li>If $P_{real} < 0.5 \Rightarrow$ <strong>Class: AI</strong> (Confidence = $1 - P_{real}$)
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+</body>
+
+</html>
