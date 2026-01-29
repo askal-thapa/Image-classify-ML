@@ -17,6 +17,11 @@ LEARNING_RATE = 1e-3 # Faster initial learning
 FINE_TUNE_LR = 1e-5 # Slower fine-tuning
 
 def load_data():
+    """
+    Load image dataset from directory and split into train/validation sets.
+    Returns:
+        tuple: (train_ds, val_ds, class_names)
+    """
     print("Loading data...")
     # Use validation split for training/validation
     train_ds = tf.keras.utils.image_dataset_from_directory(
@@ -50,6 +55,13 @@ def load_data():
     return train_ds, val_ds, class_names
 
 def get_class_weights(data_dir):
+    """
+    Calculate class weights to handle imbalance in the dataset.
+    Args:
+        data_dir (str): Path to the dataset directory.
+    Returns:
+        dict: Class weights map {class_index: weight}
+    """
     # Calculate class weights manually since dataset is batched
     # Assumes folders are class names
     classes = sorted([d for d in os.listdir(data_dir) if os.path.isdir(os.path.join(data_dir, d))])
@@ -81,6 +93,11 @@ def get_class_weights(data_dir):
     return weights
 
 def build_model():
+    """
+    Construct the EfficientNetB0-based model with a custom classification head.
+    Returns:
+        tf.keras.Model: Compiled Keras model.
+    """
     print("Building model with EfficientNetB0...")
     
     # Data Augmentation Wrapper
