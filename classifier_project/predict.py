@@ -12,10 +12,10 @@ MODEL_PATH = 'best_model.keras'
 IMG_SIZE = (224, 224)
 CLASS_NAMES = ['AI', 'Real'] # Must match training order. Usually alphabetical.
 
-def load_inference_model():
+def load_inference_model() -> tf.keras.Model:
     return tf.keras.models.load_model(MODEL_PATH)
 
-def predict_image(model, img_path):
+def predict_image(model: tf.keras.Model, img_path: str) -> tuple[str, float]:
     img = image.load_img(img_path, target_size=IMG_SIZE)
     img_array = image.img_to_array(img)
     img_array = np.expand_dims(img_array, axis=0)
@@ -37,10 +37,10 @@ def predict_image(model, img_path):
     
     if score >= 0.5:
         label = CLASS_NAMES[1]
-        confidence = score
+        confidence = float(score)
     else:
         label = CLASS_NAMES[0]
-        confidence = 1.0 - score
+        confidence = float(1.0 - score)
         
     return label, confidence
 
