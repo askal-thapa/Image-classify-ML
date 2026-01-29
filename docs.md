@@ -104,6 +104,3 @@ We rely on more than just accuracy to validate the model:
 - **Optimizer**: Adam
 - **Loss Function**: Binary Crossentropy
 - **Hardware Acceleration**: Metal (MPS) on Mac / CUDA on NVIDIA.
-
----
-*Documentation generated for the Classifier Project.*
