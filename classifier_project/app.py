@@ -1,8 +1,10 @@
-import os
 import json
+import os
 import time
-from flask import Flask, render_template, request, jsonify, send_from_directory
+
+from flask import Flask, jsonify, render_template, request, send_from_directory
 from werkzeug.utils import secure_filename
+
 from predict import load_inference_model, predict_image
 
 app = Flask(__name__)
