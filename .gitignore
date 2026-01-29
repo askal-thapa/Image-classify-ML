@@ -17,6 +17,7 @@ env/
 classifier_project/static/uploads/
 classifier_project/static/data/
 classifier_project/static/test_cases_served/
+test_cases_served/
 
 # OS
 .MacOS
