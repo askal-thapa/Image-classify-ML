@@ -35,10 +35,12 @@ def allowed_file(filename):
 
 @app.route('/', methods=['GET'])
 def index():
+    """Render the main landing page of the application."""
     return render_template('index.html')
 
 @app.route('/details')
 def details():
+    """Render the details page explaining the project."""
     return render_template('details.html')
 
 @app.route('/deep-process')
