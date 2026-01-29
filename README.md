@@ -20,6 +20,7 @@ A powerful Deep Learning classifier designed to distinguish between **AI-generat
   - [Web Application](#4-web-application)
 - [Model Architecture](#-model-architecture)
 - [Performance & Results](#-performance--results)
+- [Contributing](#-contributing)
 
 ---
 
