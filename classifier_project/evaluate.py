@@ -11,6 +11,11 @@ IMG_SIZE = (224, 224)
 BATCH_SIZE = 32
 
 def load_val_data():
+    """
+    Load validation dataset for evaluation.
+    Returns:
+        tuple: (validation_dataset, class_names)
+    """
     val_ds = tf.keras.utils.image_dataset_from_directory(
         DATA_DIR,
         validation_split=0.2,
@@ -24,6 +29,12 @@ def load_val_data():
     return val_ds, val_ds.class_names
 
 def plot_confusion_matrix(cm, class_names):
+    """
+    Plot and save confusion matrix as an image.
+    Args:
+        cm (numpy.ndarray): Confusion matrix.
+        class_names (list): List of class string names.
+    """
     plt.figure(figsize=(8, 6))
     sns.heatmap(cm, annot=True, fmt='d', cmap='Blues', 
                 xticklabels=class_names, yticklabels=class_names)
@@ -34,6 +45,12 @@ def plot_confusion_matrix(cm, class_names):
     print("Saved confusion_matrix.png")
 
 def plot_roc_curve(y_true, y_pred):
+    """
+    Plot and save ROC curve.
+    Args:
+        y_true (array): True binary labels.
+        y_pred (array): Predicted probabilities.
+    """
     fpr, tpr, thresholds = roc_curve(y_true, y_pred)
     roc_auc = auc(fpr, tpr)
     
