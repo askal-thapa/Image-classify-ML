@@ -1,9 +1,16 @@
+# Core ML
 tensorflow>=2.10.0
-flask
-pillow
 numpy
-matplotlib
 scikit-learn
+
+# Data Visualization
+matplotlib
 seaborn
-pillow-heif
-pillow-avif-plugin
+
+# Image Processing
+pillow
+pillow-heif  # Support for HEIC/HEIF images
+pillow-avif-plugin # Support for AVIF images
+
+# Web Application
+flask
