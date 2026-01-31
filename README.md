@@ -1,4 +1,9 @@
-# 🖼️ AI vs Real Image Classifier
+## Student name: Askal Thapa
+## Student number: 2315434
+## Project title: AI vs Real Image Classifier
+## Link to project video recording: https://drive.google.com/file/d/1yJFwwatnoiW4CLZrnUga4SN5vSZ3OCAj/view?usp=sharing
+
+# AI vs Real Image Classifier
 
 ![Project Status](https://img.shields.io/badge/Status-Active-brightgreen)
 ![Python](https://img.shields.io/badge/Python-3.9%2B-blue)
